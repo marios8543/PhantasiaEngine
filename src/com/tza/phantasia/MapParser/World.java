@@ -7,6 +7,7 @@ import com.tza.phantasia.Renderer.VisibleEntity;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class World{
     public enum Collision {
@@ -22,7 +23,7 @@ public class World{
     public World(String resourceName) {
         visibleEntity.setResourceName(resourceName).setScale(Main.WORLD_SCALE);
         try {
-            collisionMap = ImageIO.read(Main.class.getClassLoader().getResource(resourceName+".col"));
+            collisionMap = ImageIO.read(Objects.requireNonNull(Main.class.getClassLoader().getResource(resourceName + ".col")));
         } catch (IOException e) {
             e.printStackTrace();
         }

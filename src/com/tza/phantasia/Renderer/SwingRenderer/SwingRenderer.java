@@ -11,7 +11,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 
 public class SwingRenderer{
-    private JFrame window;
+    private final JFrame window;
     private final Map<Integer, SwingRenderable> renderItems = new HashMap<>();
     private final GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private final int refreshRate = (screen.getDisplayMode().getRefreshRate() == DisplayMode.REFRESH_RATE_UNKNOWN) ?
@@ -24,6 +24,7 @@ public class SwingRenderer{
             while (true) {
                 window.repaint();
                 try {
+                    //noinspection BusyWait
                     Thread.sleep(ms);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

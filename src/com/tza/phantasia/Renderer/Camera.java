@@ -17,16 +17,14 @@ public class Camera implements ScrollInterface {
     private int x_pos = 1;
     private int y_pos = 1;
     private final List<ScrollAction> actions = new ArrayList<>();
-    private final Timer timer = new Timer(Main.SCROLL_INTERVAL, e -> {
-        actions.forEach((action -> {
-            switch (action) {
-                case SCROLLUP -> y_pos -= Main.SCROLL_OFFSET;
-                case SCROLLDOWN -> y_pos += Main.SCROLL_OFFSET;
-                case SCROLLLEFT -> x_pos -= Main.SCROLL_OFFSET;
-                case SCROLLRIGHT -> x_pos += Main.SCROLL_OFFSET;
-            }
-        }));
-    });
+    private final Timer timer = new Timer(Main.SCROLL_INTERVAL, e -> actions.forEach((action -> {
+        switch (action) {
+            case SCROLLUP -> y_pos -= Main.SCROLL_OFFSET;
+            case SCROLLDOWN -> y_pos += Main.SCROLL_OFFSET;
+            case SCROLLLEFT -> x_pos -= Main.SCROLL_OFFSET;
+            case SCROLLRIGHT -> x_pos += Main.SCROLL_OFFSET;
+        }
+    })));
     public int getX_pos() {
         return x_pos;
     }

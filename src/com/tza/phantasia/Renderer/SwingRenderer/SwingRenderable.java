@@ -4,6 +4,7 @@ import com.tza.phantasia.Main;
 import com.tza.phantasia.Renderer.Renderable;
 
 import javax.swing.ImageIcon;
+import java.util.Objects;
 
 public class SwingRenderable extends ImageIcon implements Renderable {
     private int x_pos;
@@ -16,7 +17,7 @@ public class SwingRenderable extends ImageIcon implements Renderable {
     }
 
     public SwingRenderable(String resourceName) {
-        super(Main.class.getClassLoader().getResource(resourceName));
+        super(Objects.requireNonNull(Main.class.getClassLoader().getResource(resourceName)));
     }
 
     public void setX_pos(int x) {

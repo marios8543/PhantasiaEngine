@@ -16,15 +16,13 @@ public class Canvas extends JComponent {
     }
 
     public synchronized void paintComponent(Graphics graphics) {
-        renderableList.values().iterator().forEachRemaining((swingRenderable -> {
-            graphics.drawImage(
-                    swingRenderable.getImage(),
-                    swingRenderable.getX_pos()+(swingRenderable.getCamerable() ? camera.getX_pos() : 0),
-                    swingRenderable.getY_pos()+(swingRenderable.getCamerable() ? camera.getY_pos() : 0),
-                    swingRenderable.getWidth(),
-                    swingRenderable.getHeight(),
-                    this
-            );
-        }));
+        renderableList.values().iterator().forEachRemaining((swingRenderable -> graphics.drawImage(
+                swingRenderable.getImage(),
+                swingRenderable.getX_pos()+(swingRenderable.getCamerable() ? camera.getX_pos() : 0),
+                swingRenderable.getY_pos()+(swingRenderable.getCamerable() ? camera.getY_pos() : 0),
+                swingRenderable.getWidth(),
+                swingRenderable.getHeight(),
+                this
+        )));
     }
 }

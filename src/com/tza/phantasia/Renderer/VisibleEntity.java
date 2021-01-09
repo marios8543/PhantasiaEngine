@@ -3,12 +3,13 @@ package com.tza.phantasia.Renderer;
 import com.tza.phantasia.Main;
 import com.tza.phantasia.Renderer.SwingRenderer.SwingRenderable;
 
+@SuppressWarnings("UnusedReturnValue")
 public class VisibleEntity {
-    private String resourceName;
+    private String resourceName = "empty.bmp";
     private int x_pos = 0;
     private int y_pos = 0;
     private double scale = 1;
-    private int renderId;
+    private final int renderId;
     private boolean camerable = true;
 
     public VisibleEntity(int rid) {
@@ -22,7 +23,7 @@ public class VisibleEntity {
         }
         catch (NullPointerException e){
             renderable = new SwingRenderable();
-        };
+        }
         renderable.setScale(scale);
         renderable.setY_pos(y_pos);
         renderable.setX_pos(x_pos);
@@ -74,11 +75,6 @@ public class VisibleEntity {
         camerable = camerable1;
         update();
         return this;
-    }
-
-    @Override
-    protected void finalize() {
-        remove();
     }
 
     public String getResourceName() { return resourceName; }

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class Renderer {
     private int visibleEntityIncrementor = 0;
-    protected SwingRenderer internalRenderer;
+    protected final SwingRenderer internalRenderer;
     private final Camera camera = new Camera();
 
     public Renderer(JFrame window) {

@@ -7,9 +7,6 @@ import com.tza.phantasia.Renderer.Renderer;
 import com.tza.phantasia.Utilities.GameControlInterface;
 import com.tza.phantasia.Utilities.KeypressHelper;
 import com.tza.phantasia.Utilities.MovementListenerInterface;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.swing.*;
 
 public class Main {
@@ -24,16 +21,16 @@ public class Main {
     public static final int WORLD_SCALE = 1;
     public static final double MINIMAP_SCALE = 0.07;
 
-    private static JFrame window = new JFrame();
+    private static final JFrame window = new JFrame();
     private static final Renderer renderer = new Renderer(window);
     private static final World map = new World("map.png");
     private static MainPlayer player;
-    private static MiniMap miniMap = new MiniMap(map);
+    private static final MiniMap miniMap = new MiniMap(map);
 
 
     public synchronized static void main(String[] args) {
         renderer.addVisibleEntity().setResourceName("start.png").setCoords(0, 0);
-        player = new MainPlayer("test.png", map);
+        player = new MainPlayer("charSprite", map);
 
         player.setX(MIN_PLAYER_X);
         player.setY(MIN_PLAYER_Y+300);

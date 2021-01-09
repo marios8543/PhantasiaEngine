@@ -29,17 +29,14 @@ public class MiniMap {
         public void remove() {
             visibleEntity.remove();
         }
-
-        @Override
-        protected void finalize() throws Throwable {
-            visibleEntity.remove();
-            super.finalize();
-        }
     }
 
-    public VisibleEntity visibleEntity = getRenderer().addVisibleEntity().setScale(MINIMAP_SCALE);
-    private List<MiniMapItem> items = new ArrayList<>();
-    int mapWidth, mapHeight, miniWidth, miniHeight;
+    public final VisibleEntity visibleEntity = getRenderer().addVisibleEntity().setScale(MINIMAP_SCALE);
+    private final List<MiniMapItem> items = new ArrayList<>();
+    final int mapWidth;
+    final int mapHeight;
+    final int miniWidth;
+    final int miniHeight;
 
     public MiniMap(World map) {
         mapWidth = map.getVisibleEntity().getRenderable().getWidth();

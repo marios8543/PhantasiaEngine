@@ -17,7 +17,7 @@ public class Camera implements ScrollInterface {
     private int x_pos = 1;
     private int y_pos = 1;
     private final List<ScrollAction> actions = new ArrayList<>();
-    private final Timer timer = new Timer(Main.SCROLL_INTERVAL, e -> actions.forEach((action -> {
+    private final Timer timer = new Timer(Main.SCROLL_INTERVAL, e -> actions.iterator().forEachRemaining((action -> {
         switch (action) {
             case SCROLLUP -> y_pos -= Main.SCROLL_OFFSET;
             case SCROLLDOWN -> y_pos += Main.SCROLL_OFFSET;

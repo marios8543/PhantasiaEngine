@@ -3,7 +3,6 @@ package com.tza.phantasia.Entities;
 import com.tza.phantasia.Main;
 import com.tza.phantasia.MapParser.CollisionCheck;
 import com.tza.phantasia.MapParser.World;
-import com.tza.phantasia.Renderer.VisibleEntity;
 import com.tza.phantasia.Utilities.MovementListenerInterface;
 import com.tza.phantasia.Utilities.KeypressHelper;
 
@@ -13,14 +12,13 @@ import java.util.List;
 
 public class Walker extends GenericEntity{
     protected final List<KeypressHelper.KeyAction> actionList = new ArrayList<>();
-    private boolean autoUpdate = true;
     private final List<MovementListenerInterface> externalMovementListeners = new ArrayList<>();
     private CollisionCheck collisionCheck;
     private final String resourceName;
     private KeypressHelper.KeyAction lastAction;
     private final Timer timer = new Timer(Main.WALK_INTERVAL, e -> {
-        actionList.forEach((walkAction -> {
-            int tmpY = y_pos, tmpX = x_pos;
+        actionList.iterator().forEachRemaining((walkAction -> {
+            int tmpY = getY(), tmpX = getX();
             switch (walkAction) {
                 case MOVEUP -> tmpY -= Main.WALK_OFFSET;
                 case MOVEDOWN -> tmpY += Main.WALK_OFFSET;
@@ -29,10 +27,11 @@ public class Walker extends GenericEntity{
             }
             World.Collision collision = collisionCheck.canMoveTo(tmpX, tmpY, this);
             if (collision == null) {
-                x_pos = tmpX;
-                y_pos = tmpY;
+                setX(tmpX);
+                setY(tmpY);
+                update();
                 externalMovementListeners.forEach((listener) -> {
-                    listener.positionUpdate(x_pos, y_pos);
+                    listener.positionUpdate(getX(), getY());
                     listener.movementUpdate(walkAction);
                 });
             }
@@ -40,16 +39,11 @@ public class Walker extends GenericEntity{
                 externalMovementListeners.forEach((listener) -> listener.collision(collision));
             }
         }));
-        if (autoUpdate) update();
     });
 
     public Walker(String resourceName1) {
-        x_pos = Main.MIN_PLAYER_X;
-        y_pos = Main.MIN_PLAYER_Y;
         resourceName = resourceName1;
-        visibleEntity = Main.getRenderer().addVisibleEntity();
-        visibleEntity.setResourceName(String.format("%s/stand-left.gif", resourceName1));
-        visibleEntity.setCoords(x_pos, y_pos);
+        getVisibleEntity().setResourceName(String.format("%s/stand-left.gif", resourceName1));
     }
 
     public void startAction(KeypressHelper.KeyAction action) {
@@ -73,24 +67,21 @@ public class Walker extends GenericEntity{
         externalMovementListeners.add(controlInterface);
     }
 
-    public void setAutoUpdate(boolean autoUpdate1) {
-        autoUpdate = autoUpdate1;
-    }
-
     public boolean isWalking(KeypressHelper.KeyAction action) {
         return actionList.contains(action);
     }
 
-    public VisibleEntity getVisibleEntity() { return  visibleEntity; }
+    public boolean isWalking() {
+        return !actionList.isEmpty();
+    }
 
     private void applyMovementSprite(KeypressHelper.KeyAction action, boolean isStopped) {
-        System.out.println("Applying gif");
         String prefix = isStopped ? "stand" : "walk";
         switch (action) {
-            case MOVELEFT -> visibleEntity.setResourceName(String.format("%s/%s-left.gif", resourceName, prefix));
-            case MOVEUP -> visibleEntity.setResourceName(String.format("%s/%s-up.gif", resourceName, prefix));
-            case MOVEDOWN -> visibleEntity.setResourceName(String.format("%s/%s-down.gif", resourceName, prefix));
-            case MOVERIGHT -> visibleEntity.setResourceName(String.format("%s/%s-right.gif", resourceName, prefix));
+            case MOVELEFT -> getVisibleEntity().setResourceName(String.format("%s/%s-left.gif", resourceName, prefix));
+            case MOVEUP -> getVisibleEntity().setResourceName(String.format("%s/%s-up.gif", resourceName, prefix));
+            case MOVEDOWN -> getVisibleEntity().setResourceName(String.format("%s/%s-down.gif", resourceName, prefix));
+            case MOVERIGHT -> getVisibleEntity().setResourceName(String.format("%s/%s-right.gif", resourceName, prefix));
         }
     }
 
@@ -102,10 +93,6 @@ public class Walker extends GenericEntity{
             actionList.iterator().forEachRemaining((action -> applyMovementSprite(action, false)));
             //applyMovementSprite(actionList.get(0), false);
         }
-    }
-
-    public void update() {
-        visibleEntity.setCoords(x_pos, y_pos);
     }
 
     public void setCollisionCheck(CollisionCheck collisionCheck1) {

@@ -3,6 +3,8 @@ package com.tza.phantasia.Renderer;
 import com.tza.phantasia.Main;
 import com.tza.phantasia.Renderer.SwingRenderer.SwingRenderable;
 
+import java.awt.*;
+
 @SuppressWarnings("UnusedReturnValue")
 public class VisibleEntity {
     private String resourceName = "empty.bmp";
@@ -36,8 +38,10 @@ public class VisibleEntity {
     }
 
     private void update() {
-        Main.getRenderer().internalRenderer.getRenderList().remove(renderId);
-        Main.getRenderer().internalRenderer.getRenderList().put(renderId, getRenderable());
+        EventQueue.invokeLater(() -> {
+            Main.getRenderer().internalRenderer.getRenderList().remove(renderId);
+            Main.getRenderer().internalRenderer.getRenderList().put(renderId, getRenderable());
+        });
     }
 
     public VisibleEntity setResourceName(String resourceName) {

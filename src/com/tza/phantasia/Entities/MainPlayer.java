@@ -7,36 +7,27 @@ import com.tza.phantasia.Utilities.KeypressHelper;
 import com.tza.phantasia.Utilities.MovementListenerInterface;
 
 public class MainPlayer extends Walker {
-    private int viewXpos = 0;
-    private int viewYpos = 0;
+    private int viewX;
+    private int viewY;
 
-    public MainPlayer(String resourceName, World world) {
+    public MainPlayer(String resourceName, World world, int winWidth, int winHeight) {
         super(resourceName);
         setAutoUpdate(false);
-        visibleEntity.setScale(Main.WORLD_SCALE);
+        getVisibleEntity().setScale(Main.WORLD_SCALE);
         setCollisionCheck(world.getCollision());
 
         super.addMovementListener(new MovementListenerInterface() {
             @Override
             public void positionUpdate(int x, int y) {
-                if (viewXpos <= Main.MIN_PLAYER_X && isWalking(KeypressHelper.KeyAction.MOVELEFT))
-                    Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLRIGHT);
-                else if (viewXpos >= Main.MAX_PLAYER_X && isWalking(KeypressHelper.KeyAction.MOVERIGHT))
-                    Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLLEFT);
-                if (viewYpos <= Main.MIN_PLAYER_Y && isWalking(KeypressHelper.KeyAction.MOVEUP))
-                    Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLDOWN);
-                else if(viewYpos >= Main.MAX_PLAYER_Y && isWalking(KeypressHelper.KeyAction.MOVEDOWN))
-                    Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLUP);
-                visibleEntity.setCoords(x, y);
             }
 
             @Override
             public void movementUpdate(KeypressHelper.KeyAction action) {
                 switch (action) {
-                    case MOVEUP -> viewYpos = viewYpos - Main.WALK_OFFSET >= Main.MIN_PLAYER_Y ? viewYpos -= Main.WALK_OFFSET : Main.MIN_PLAYER_Y;
-                    case MOVEDOWN -> viewYpos = viewYpos + Main.WALK_OFFSET <= Main.MAX_PLAYER_Y ? viewYpos += Main.WALK_OFFSET : Main.MAX_PLAYER_Y;
-                    case MOVELEFT -> viewXpos = viewXpos - Main.WALK_OFFSET >= Main.MIN_PLAYER_X ? viewXpos -= Main.WALK_OFFSET : Main.MIN_PLAYER_X;
-                    case MOVERIGHT -> viewXpos = viewXpos + Main.WALK_OFFSET <= Main.MAX_PLAYER_X ? viewXpos += Main.WALK_OFFSET : Main.MAX_PLAYER_X;
+                    case MOVELEFT -> Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLRIGHT);
+                    case MOVERIGHT -> Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLLEFT);
+                    case MOVEUP -> Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLDOWN);
+                    case MOVEDOWN -> Main.getRenderer().getCamera().scroll(Camera.ScrollAction.SCROLLUP);
                 }
             }
 
@@ -47,7 +38,12 @@ public class MainPlayer extends Walker {
 
             @Override
             public void collision(World.Collision collision) {
-                Main.getRenderer().getCamera().stopAll();
+                switch (collision) {
+                    case COLLLEFT -> Main.getRenderer().getCamera().stop(Camera.ScrollAction.SCROLLRIGHT);
+                    case COLLRIGHT -> Main.getRenderer().getCamera().stop(Camera.ScrollAction.SCROLLLEFT);
+                    case COLLTOP -> Main.getRenderer().getCamera().stop(Camera.ScrollAction.SCROLLDOWN);
+                    case COLLBOTTOM -> Main.getRenderer().getCamera().stop(Camera.ScrollAction.SCROLLUP);
+                }
             }
 
             @Override
@@ -59,15 +55,5 @@ public class MainPlayer extends Walker {
             @Override
             public void move(KeypressHelper.KeyAction action) {}
         });
-    }
-
-    public void setX(int x) {
-        x_pos = x;
-        viewXpos = Math.min(x, Main.MAX_PLAYER_X);
-    }
-
-    public void setY(int y) {
-        y_pos = y;
-        viewYpos = Math.min(y, Main.MAX_PLAYER_Y);
     }
 }

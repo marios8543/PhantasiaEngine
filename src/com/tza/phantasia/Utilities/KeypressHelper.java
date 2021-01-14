@@ -18,18 +18,20 @@ public class KeypressHelper {
     private static final Map<Character, KeyAction> keyBinds = new HashMap<>();
     private static final boolean[] debounceArray = new boolean[6];
 
-    public KeypressHelper(JFrame frame, GameControlInterface controlInterface) {
-        this(frame, controlInterface, false);
+    public KeypressHelper(JFrame frame, GameControlInterface controlInterface, boolean debounce) {
+        new KeypressHelper(frame, controlInterface, debounce, null);
     }
 
-    public KeypressHelper(JFrame frame, GameControlInterface controlInterface, boolean debounce) {
+    public KeypressHelper(JFrame frame, GameControlInterface controlInterface, boolean debounce, List<KeyAction> keys) {
         Arrays.fill(debounceArray, false);
         List<KeyAction> keyActionList = Arrays.asList(KeyAction.values());
 
-        keyBinds.put('w', KeyAction.MOVEUP);
-        keyBinds.put('s', KeyAction.MOVEDOWN);
-        keyBinds.put('a', KeyAction.MOVELEFT);
-        keyBinds.put('d', KeyAction.MOVERIGHT);
+        if (Objects.isNull(keys)) {
+            keyBinds.put('w', KeyAction.MOVEUP);
+            keyBinds.put('s', KeyAction.MOVEDOWN);
+            keyBinds.put('a', KeyAction.MOVELEFT);
+            keyBinds.put('d', KeyAction.MOVERIGHT);
+        }
 
         frame.addKeyListener(new KeyListener() {
             @Override

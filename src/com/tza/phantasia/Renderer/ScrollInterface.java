@@ -6,4 +6,6 @@ public interface ScrollInterface {
     void stop(Camera.ScrollAction action);
 
     void stopAll();
+
+    void getCoords(int x, int y);
 }

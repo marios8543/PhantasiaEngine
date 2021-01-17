@@ -38,4 +38,8 @@ public class GenericEntity {
     public void setAutoUpdate(boolean autoUpdate1) {
         autoUpdate = autoUpdate1;
     }
+
+    public void remove() {
+        visibleEntity.remove();
+    }
 }

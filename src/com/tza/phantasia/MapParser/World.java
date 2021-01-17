@@ -55,7 +55,7 @@ public class World{
         return collision;
     }
 
-    public CollisionCheck getCollision() {
+    public CollisionCheckInterface getCollision() {
         return this::getCollision;
     }
 

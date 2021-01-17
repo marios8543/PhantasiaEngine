@@ -61,9 +61,9 @@ public class SoundMap {
                 @Override
                 public void collision(World.Collision collision) {}
                 @Override
-                public void action1() {}
+                public void action1(Object v) {}
                 @Override
-                public void action2() {}
+                public void action2(Object v) {}
                 @Override
                 public void genericAction(char c) {}
             });

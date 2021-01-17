@@ -1,9 +1,11 @@
 package com.tza.phantasia.Renderer;
 
 import com.tza.phantasia.Main;
-import com.tza.phantasia.Renderer.SwingRenderer.SwingRenderable;
+import com.tza.phantasia.Renderer.SwingRenderer.SwingImageRenderable;
+import com.tza.phantasia.Renderer.SwingRenderer.SwingTextRenderable;
 
 import java.awt.*;
+import java.util.Objects;
 
 @SuppressWarnings("UnusedReturnValue")
 public class VisibleEntity {
@@ -11,21 +13,21 @@ public class VisibleEntity {
     private int x_pos = 0;
     private int y_pos = 0;
     private double scale = 1;
-    private final int renderId;
+    private final long renderId;
     private boolean camerable = true;
+    private String string = null;
 
-    public VisibleEntity(int rid) {
+    public VisibleEntity(long rid) {
         renderId = rid;
     }
 
-    public SwingRenderable getRenderable() {
-        SwingRenderable renderable;
-        try {
-            renderable = new SwingRenderable(resourceName);
+    public Renderable getRenderable() {
+        Renderable renderable;
+        if (Objects.nonNull(string)) {
+            renderable = new SwingTextRenderable();
+            renderable.setString(string);
         }
-        catch (NullPointerException e){
-            renderable = new SwingRenderable();
-        }
+        else renderable = new SwingImageRenderable(resourceName);
         renderable.setScale(scale);
         renderable.setY_pos(y_pos);
         renderable.setX_pos(x_pos);
@@ -77,6 +79,12 @@ public class VisibleEntity {
 
     public VisibleEntity setCamerable(boolean camerable1) {
         camerable = camerable1;
+        update();
+        return this;
+    }
+
+    public VisibleEntity setString(String s) {
+        string = s;
         update();
         return this;
     }

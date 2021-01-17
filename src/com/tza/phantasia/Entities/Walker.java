@@ -1,44 +1,48 @@
 package com.tza.phantasia.Entities;
 
 import com.tza.phantasia.Main;
-import com.tza.phantasia.MapParser.CollisionCheck;
+import com.tza.phantasia.MapParser.CollisionCheckInterface;
 import com.tza.phantasia.MapParser.World;
 import com.tza.phantasia.Utilities.MovementListenerInterface;
 import com.tza.phantasia.Utilities.KeypressHelper;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class Walker extends GenericEntity{
     protected final List<KeypressHelper.KeyAction> actionList = new ArrayList<>();
     private final List<MovementListenerInterface> externalMovementListeners = new ArrayList<>();
-    private CollisionCheck collisionCheck;
+    private CollisionCheckInterface collisionCheckInterface;
     private final String resourceName;
     private KeypressHelper.KeyAction lastAction;
     private final Timer timer = new Timer(Main.WALK_INTERVAL, e -> {
-        actionList.iterator().forEachRemaining((walkAction -> {
-            int tmpY = getY(), tmpX = getX();
-            switch (walkAction) {
-                case MOVEUP -> tmpY -= Main.WALK_OFFSET;
-                case MOVEDOWN -> tmpY += Main.WALK_OFFSET;
-                case MOVELEFT -> tmpX -= Main.WALK_OFFSET;
-                case MOVERIGHT -> tmpX += Main.WALK_OFFSET;
-            }
-            World.Collision collision = collisionCheck.canMoveTo(tmpX, tmpY, this);
-            if (collision == null) {
-                setX(tmpX);
-                setY(tmpY);
-                update();
-                externalMovementListeners.forEach((listener) -> {
-                    listener.positionUpdate(getX(), getY());
-                    listener.movementUpdate(walkAction);
-                });
-            }
-            else {
-                externalMovementListeners.forEach((listener) -> listener.collision(collision));
-            }
-        }));
+        try {
+            actionList.forEach((walkAction -> {
+                int tmpY = getY(), tmpX = getX();
+                switch (walkAction) {
+                    case MOVEUP -> tmpY -= Main.WALK_OFFSET;
+                    case MOVEDOWN -> tmpY += Main.WALK_OFFSET;
+                    case MOVELEFT -> tmpX -= Main.WALK_OFFSET;
+                    case MOVERIGHT -> tmpX += Main.WALK_OFFSET;
+                }
+                World.Collision collision = collisionCheckInterface.canMoveTo(tmpX, tmpY, this);
+                if (collision == null) {
+                    setX(tmpX);
+                    setY(tmpY);
+                    update();
+                    externalMovementListeners.forEach((listener) -> {
+                        listener.positionUpdate(getX(), getY());
+                        listener.movementUpdate(walkAction);
+                    });
+                }
+                else {
+                    externalMovementListeners.forEach((listener) -> listener.collision(collision));
+                }
+            }));
+        }
+        catch (ConcurrentModificationException ignored){};
     });
 
     public Walker(String resourceName1) {
@@ -95,7 +99,7 @@ public class Walker extends GenericEntity{
         }
     }
 
-    public void setCollisionCheck(CollisionCheck collisionCheck1) {
-        collisionCheck = collisionCheck1;
+    public void setCollisionCheck(CollisionCheckInterface collisionCheckInterface1) {
+        collisionCheckInterface = collisionCheckInterface1;
     }
 }

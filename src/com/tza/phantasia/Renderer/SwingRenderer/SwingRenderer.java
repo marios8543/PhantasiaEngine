@@ -1,6 +1,7 @@
 package com.tza.phantasia.Renderer.SwingRenderer;
 
 import com.tza.phantasia.Renderer.Camera;
+import com.tza.phantasia.Renderer.Renderable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +13,7 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class SwingRenderer{
     private final JFrame window;
-    private final Map<Integer, SwingRenderable> renderItems = new HashMap<>();
+    private final Map<Long, Renderable> renderItems = new HashMap<>();
     private final GraphicsDevice screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private final int refreshRate = (screen.getDisplayMode().getRefreshRate() == DisplayMode.REFRESH_RATE_UNKNOWN) ?
             Integer.parseInt(System.getenv("FPS") == null ? "60" : System.getenv("FPS")) :
@@ -41,7 +42,7 @@ public class SwingRenderer{
         window.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public Map<Integer, SwingRenderable> getRenderList() {
+    public Map<Long, Renderable> getRenderList() {
         return renderItems;
     }
 

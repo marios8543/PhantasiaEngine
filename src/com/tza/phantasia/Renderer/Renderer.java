@@ -5,7 +5,7 @@ import com.tza.phantasia.Renderer.SwingRenderer.SwingRenderer;
 import javax.swing.*;
 
 public class Renderer {
-    private int visibleEntityIncrementor = 0;
+    private long visibleEntityIncrementor = 0;
     protected final SwingRenderer internalRenderer;
     private final Camera camera = new Camera();
 

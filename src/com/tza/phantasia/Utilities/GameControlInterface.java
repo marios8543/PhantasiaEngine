@@ -5,9 +5,9 @@ public interface GameControlInterface {
 
     void stop(KeypressHelper.KeyAction action);
 
-    void action1();
+    void action1(Object v);
 
-    void action2();
+    void action2(Object v);
 
     void genericAction(char c);
 

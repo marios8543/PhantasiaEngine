@@ -6,17 +6,17 @@ import com.tza.phantasia.Renderer.Renderable;
 import javax.swing.ImageIcon;
 import java.util.Objects;
 
-public class SwingRenderable extends ImageIcon implements Renderable {
+public class SwingImageRenderable extends ImageIcon implements Renderable {
     private int x_pos;
     private int y_pos;
     private double scale;
     private boolean camerable;
 
-    public SwingRenderable() {
+    public SwingImageRenderable() {
         super();
     }
 
-    public SwingRenderable(String resourceName) {
+    public SwingImageRenderable(String resourceName) {
         super(Objects.requireNonNull(Main.class.getClassLoader().getResource(resourceName)));
     }
 
@@ -51,6 +51,14 @@ public class SwingRenderable extends ImageIcon implements Renderable {
     public int getHeight() {
         return (int)(this.getImage().getHeight(null) * scale);
     }
+
+    @Override
+    public String getString() {
+        return super.toString();
+    }
+
+    @Override
+    public void setString(String string) {}
 
     public boolean getCamerable() { return camerable; }
 }

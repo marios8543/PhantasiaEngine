@@ -1,68 +1,21 @@
-package com.tza.phantasia;
+package com.tza.phantasia.Netcode;
 
-import com.tza.phantasia.Entities.MiniMap;
-import com.tza.phantasia.Entities.Walker;
-import com.tza.phantasia.MapParser.World;
-import com.tza.phantasia.Renderer.VisibleEntity;
 import com.tza.phantasia.Utilities.GameControlInterface;
 import com.tza.phantasia.Utilities.KeypressHelper;
-import com.tza.phantasia.Utilities.MovementListenerInterface;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import javax.swing.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WSClient extends WebSocketClient {
     public String selfId = "";
-    public GameControlInterface mainControlInterface;
+    public final GameControlInterface mainControlInterface;
 
-    class Player extends Walker {
-        public final String username;
-        private final VisibleEntity nameTag;
-
-        public Player(String name) {
-            super("charSprite");
-            username = name;
-            nameTag = Main.getRenderer().addVisibleEntity().setString(username);
-            Main.getSoundMap().addHandler(Main.getMainPlayer(), this);
-            MiniMap.MiniMapItem miniPlayer = Main.getMiniMap().addItem("point.png");
-            super.setCollisionCheck(Main.getMap().getCollision());
-            addMovementListener(new MovementListenerInterface() {
-                @Override
-                public void positionUpdate(int x, int y) {
-                    miniPlayer.setX(x);
-                    miniPlayer.setY(y);
-
-                    nameTag.setX_pos(x);
-                    nameTag.setY_pos(y - 30);
-                }
-                @Override
-                public void movementUpdate(KeypressHelper.KeyAction action) {}
-                @Override
-                public void collision(World.Collision collision) {}
-                @Override
-                public void move(KeypressHelper.KeyAction action) {}
-                @Override
-                public void stop(KeypressHelper.KeyAction action) {}
-                @Override
-                public void action1(Object v) {}
-                @Override
-                public void action2(Object v) {}
-                @Override
-                public void genericAction(char c) {}
-            });
-            setX(Main.STARTING_X);
-            setY(Main.STARTING_Y);
-        }
-    }
-
-    public Map<String, Player> playerList = new HashMap<>();
+    public final Map<String, Player> playerList = new HashMap<>();
     public WSClient(URI uri, GameControlInterface mainControlInterface1) {
         super(uri);
         mainControlInterface = mainControlInterface1;
@@ -124,5 +77,7 @@ public class WSClient extends WebSocketClient {
     }
 
     @Override
-    public void onError(Exception e) {}
+    public void onError(Exception e) {
+        e.printStackTrace();
+    }
 }

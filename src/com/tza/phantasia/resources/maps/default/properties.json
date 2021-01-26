@@ -1,0 +1,9 @@
+{
+	"starting_x": 180,
+	"starting_y": 310,
+	"sound_samples": {
+		"default": "sounds/defaultSound.wav",
+		"-14503604": "sounds/grass.wav",
+		"-16735512": "sounds/water.wav"
+	}
+}

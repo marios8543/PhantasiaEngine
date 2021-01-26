@@ -1,12 +1,13 @@
 package com.tza.phantasia.Entities;
 
-import com.tza.phantasia.Main;
 import com.tza.phantasia.Renderer.VisibleEntity;
+
+import static com.tza.phantasia.Phantasia.getRenderer;
 
 public class GenericEntity {
     private int x_pos = 0;
     private int y_pos = 0;
-    private final VisibleEntity visibleEntity = Main.getRenderer().addVisibleEntity();
+    private final VisibleEntity visibleEntity = getRenderer().addVisibleEntity();
     private boolean autoUpdate = true;
 
     public VisibleEntity getVisibleEntity() {

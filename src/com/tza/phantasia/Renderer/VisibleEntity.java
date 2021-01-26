@@ -1,15 +1,16 @@
 package com.tza.phantasia.Renderer;
 
-import com.tza.phantasia.Main;
 import com.tza.phantasia.Renderer.SwingRenderer.SwingImageRenderable;
 import com.tza.phantasia.Renderer.SwingRenderer.SwingTextRenderable;
 
 import java.awt.*;
 import java.util.Objects;
 
+import static com.tza.phantasia.Phantasia.getRenderer;
+
 @SuppressWarnings("UnusedReturnValue")
 public class VisibleEntity {
-    private String resourceName = "empty.bmp";
+    private String resourceName = "entities/empty.bmp";
     private int x_pos = 0;
     private int y_pos = 0;
     private double scale = 1;
@@ -36,13 +37,13 @@ public class VisibleEntity {
     }
 
     public void remove() {
-        Main.getRenderer().internalRenderer.getRenderList().remove(renderId);
+        getRenderer().internalRenderer.getRenderList().remove(renderId);
     }
 
     private void update() {
         EventQueue.invokeLater(() -> {
-            Main.getRenderer().internalRenderer.getRenderList().remove(renderId);
-            Main.getRenderer().internalRenderer.getRenderList().put(renderId, getRenderable());
+            getRenderer().internalRenderer.getRenderList().remove(renderId);
+            getRenderer().internalRenderer.getRenderList().put(renderId, getRenderable());
         });
     }
 

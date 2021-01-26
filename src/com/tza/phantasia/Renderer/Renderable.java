@@ -1,7 +1,5 @@
 package com.tza.phantasia.Renderer;
 
-import com.tza.phantasia.Renderer.SwingRenderer.SwingImageRenderable;
-
 import java.awt.*;
 
 public interface Renderable {

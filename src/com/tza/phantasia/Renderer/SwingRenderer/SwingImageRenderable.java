@@ -1,10 +1,9 @@
 package com.tza.phantasia.Renderer.SwingRenderer;
 
-import com.tza.phantasia.Main;
 import com.tza.phantasia.Renderer.Renderable;
+import com.tza.phantasia.Utilities.ResourceUtils;
 
 import javax.swing.ImageIcon;
-import java.util.Objects;
 
 public class SwingImageRenderable extends ImageIcon implements Renderable {
     private int x_pos;
@@ -17,7 +16,7 @@ public class SwingImageRenderable extends ImageIcon implements Renderable {
     }
 
     public SwingImageRenderable(String resourceName) {
-        super(Objects.requireNonNull(Main.class.getClassLoader().getResource(resourceName)));
+        super(ResourceUtils.getResource(resourceName));
     }
 
     public void setX_pos(int x) {

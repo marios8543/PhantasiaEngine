@@ -1,18 +1,17 @@
-package com.tza.phantasia.Entities;
+package com.tza.phantasia.MapParser;
 
 import com.tza.phantasia.MapParser.World;
 import com.tza.phantasia.Renderer.VisibleEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.tza.phantasia.Main.getRenderer;
-import static com.tza.phantasia.Main.MINIMAP_SCALE;
+import static com.tza.phantasia.Phantasia.getRenderer;
 
 public class MiniMap {
     public class MiniMapItem {
         private final VisibleEntity visibleEntity = getRenderer().addVisibleEntity().
                 setCamerable(false).
-                setScale(MINIMAP_SCALE);
+                setScale(scale);
 
         private MiniMapItem(String resource) {
             visibleEntity.setResourceName(resource);
@@ -31,18 +30,21 @@ public class MiniMap {
         }
     }
 
-    public final VisibleEntity visibleEntity = getRenderer().addVisibleEntity().setScale(MINIMAP_SCALE);
+    public final VisibleEntity visibleEntity = getRenderer().addVisibleEntity();
     private final List<MiniMapItem> items = new ArrayList<>();
     final int mapWidth;
     final int mapHeight;
     final int miniWidth;
     final int miniHeight;
+    final int scale;
 
-    public MiniMap(World map) {
+    public MiniMap(World map, int scale1) {
+        scale = scale1;
         mapWidth = map.getVisibleEntity().getRenderable().getWidth();
         mapHeight = map.getVisibleEntity().getRenderable().getHeight();
-        miniWidth = (int)(mapWidth * MINIMAP_SCALE);
-        miniHeight = (int)(mapHeight * MINIMAP_SCALE);
+        miniWidth = mapWidth * scale;
+        miniHeight = mapHeight * scale;
+        visibleEntity.setScale(scale);
     }
 
     public MiniMapItem addItem(String resource) {
